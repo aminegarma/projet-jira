@@ -1,0 +1,39 @@
+OPERATION EVO - RAPPORT DE VERIFICATION V3
+Date : 2026-07-22
+
+CORRECTIF PRINCIPAL
+
+[OK] Redirection par rôle : administrateur -> /admin, utilisateur/manager -> /dashboard.
+[OK] Un utilisateur connecté ne peut pas ouvrir le dashboard administrateur.
+[OK] Le dashboard utilisateur est un template séparé et ne charge pas les ressources admin.
+[OK] Les tickets d'un utilisateur sont filtrés côté serveur sur son identifiant.
+[OK] Lecture, modification, commentaires et activité sont interdits sur les tickets d'un autre utilisateur.
+[OK] Affectation, suppression, export, groupes, utilisateurs globaux et statistiques restent réservés à l'administrateur.
+
+VERIFICATIONS EXECUTEES DANS L'ENVIRONNEMENT DE CONSTRUCTION
+
+[OK] Compilation de tous les fichiers Python avec compileall.
+[OK] 25 tests découverts : 23 réussis et 2 tests d'intégration Flask ignorés uniquement
+     parce que Flask/Werkzeug ne sont pas installés dans ce conteneur hors-ligne.
+[OK] Tests CRUD du coeur : tickets, utilisateurs et groupes de problèmes.
+[OK] Tests d'authentification au niveau contrôleur/base.
+[OK] Tests IA, similarité, suggestion, commentaires, activité, historique, métriques,
+     exports et rapport hebdomadaire.
+[OK] 8 tests de contrat statique des dashboards administrateur et utilisateur.
+[OK] Syntaxe JavaScript des deux dashboards validée avec Node.js.
+[OK] Références JavaScript vers les identifiants HTML vérifiées.
+[OK] Parcours contrôleur réel sur une base SQLite temporaire : création du compte de démo,
+     ticket utilisateur, modification et commentaire.
+
+TESTS D'INTEGRATION FLASK À EXÉCUTER SOUS WINDOWS
+
+Les deux tests dans backend/tests/test_api_integration.py utilisent le vrai client de test Flask.
+Ils couvrent :
+- connexion administrateur et CRUD complet ;
+- connexion utilisateur vers /dashboard ;
+- refus d'accès à /admin ;
+- filtrage serveur des tickets ;
+- refus d'accès aux ressources administrateur et aux tickets d'autrui.
+
+Après setup_windows.bat, exécuter test_windows.bat. Les dépendances Flask sont alors présentes
+et ces deux tests ne seront plus ignorés.

@@ -1,0 +1,134 @@
+<section class="page-card">
+  <div class="page-header">
+    <div>
+      <p class="section-kicker">Dashboard admin</p>
+      <h2>Tableau des tickets</h2>
+    </div>
+    <button type="button" (click)="refreshItems()">Rafraîchir</button>
+  </div>
+
+  @if (stats) {
+    <div class="stats-grid">
+      <article><span>Total</span><strong>{{ stats.totalTickets }}</strong></article>
+      <article><span>Ouverts</span><strong>{{ stats.ouverts }}</strong></article>
+      <article><span>En cours</span><strong>{{ stats.enCours }}</strong></article>
+      <article><span>Résolus</span><strong>{{ stats.resolus }}</strong></article>
+    </div>
+  }
+
+  <div class="filters">
+    <label>
+      <span>Catégorie</span>
+      <select [(ngModel)]="selectedCategory" (ngModelChange)="applyFilters()">
+        <option value="all">Toutes</option>
+        @for (category of categories; track category) {
+          <option [value]="category">{{ category }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      <span>Département</span>
+      <select [(ngModel)]="selectedDepartment" (ngModelChange)="applyFilters()">
+        <option value="all">Tous</option>
+        @for (department of departments; track department) {
+          <option [value]="department">{{ department }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      <span>Gravité</span>
+      <select [(ngModel)]="selectedGravite" (ngModelChange)="applyFilters()">
+        <option value="all">Toutes</option>
+        <option value="haute">Haute</option>
+        <option value="moyenne">Moyenne</option>
+        <option value="faible">Faible</option>
+      </select>
+    </label>
+
+    <label>
+      <span>Priorité</span>
+      <select [(ngModel)]="selectedPriorite" (ngModelChange)="applyFilters()">
+        <option value="all">Toutes</option>
+        <option value="urgent">Urgente</option>
+        <option value="normal">Normale</option>
+        <option value="faible">Faible</option>
+      </select>
+    </label>
+
+    <label>
+      <span>Statut</span>
+      <select [(ngModel)]="selectedStatut" (ngModelChange)="applyFilters()">
+        <option value="all">Tous</option>
+        <option value="ouvert">Ouvert</option>
+        <option value="en_cours">En cours</option>
+        <option value="resolu">Résolu</option>
+      </select>
+    </label>
+
+    <label>
+      <span>Tri</span>
+      <select [(ngModel)]="sortBy" (ngModelChange)="applyFilters()">
+        <option value="priorite">Priorité</option>
+        <option value="date_creation">Date</option>
+      </select>
+    </label>
+
+    <label>
+      <span>Sens</span>
+      <select [(ngModel)]="sortDirection" (ngModelChange)="applyFilters()">
+        <option value="desc">Décroissant</option>
+        <option value="asc">Croissant</option>
+      </select>
+    </label>
+
+    <div class="filter-actions">
+      <button type="button" class="secondary" (click)="resetFilters()">Réinitialiser</button>
+    </div>
+  </div>
+
+  @if (loading) {
+    <p class="state-copy">Chargement des tickets...</p>
+  } @else if (!filteredTickets.length) {
+    <p class="state-copy">Aucun ticket ne correspond à ces filtres.</p>
+  } @else {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Titre</th>
+            <th>Catégorie</th>
+            <th>Gravité</th>
+            <th>Affectation</th>
+            <th>Département</th>
+            <th>Priorité</th>
+            <th>Date</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of filteredTickets; track item.id) {
+            <tr>
+              <td>
+                <a [routerLink]="['/items', item.id]">{{ item.titre }}</a>
+                <p class="muted">{{ item.reporter_name ?? 'Demandeur inconnu' }}</p>
+              </td>
+              <td>{{ ticketCategory(item) }}</td>
+              <td>{{ graviteLabel(item.gravite) }}</td>
+              <td>{{ assigneeLabel(item) }}</td>
+              <td>{{ item.departement_cible ?? 'Non défini' }}</td>
+              <td>
+                <span class="priority-badge" [class]="priorityBadgeClass(item.priorite)">
+                  {{ item.priorite === 'urgent' ? 'Urgente' : item.priorite === 'normal' ? 'Normale' : 'Faible' }}
+                </span>
+              </td>
+              <td>{{ item.date_creation | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ formatStatus(item.statut) }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

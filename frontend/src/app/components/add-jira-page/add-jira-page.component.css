@@ -1,0 +1,135 @@
+.page-card {
+  display: grid;
+  gap: 20px;
+  padding: 28px;
+  border-radius: 28px;
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 24px 60px rgba(17, 17, 17, 0.1);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: end;
+}
+
+.section-kicker {
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #d90429;
+  font-size: 0.72rem;
+}
+
+h2 {
+  margin: 0;
+  color: #111111;
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+}
+
+.section-note {
+  margin: 0;
+  max-width: 34rem;
+  color: #6a6a6a;
+}
+
+.form-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+label {
+  display: grid;
+  gap: 8px;
+  color: #1f1f1f;
+}
+
+label span {
+  font-size: 0.92rem;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 16px;
+  border: 1px solid rgba(17, 17, 17, 0.1);
+  background: #fff;
+  color: #111111;
+  padding: 14px 16px;
+  font: inherit;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid rgba(247, 127, 0, 0.35);
+  border-color: rgba(247, 127, 0, 0.75);
+}
+
+textarea {
+  resize: vertical;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+
+button {
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, #d90429, #f77f00);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.feedback {
+  margin: 0;
+  color: #b85f00;
+}
+
+.ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 12px 18px;
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  color: #111111;
+  text-decoration: none;
+  background: #fff;
+}
+
+.button-link {
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .page-header,
+  .form-grid {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .page-header {
+    align-items: start;
+  }
+}

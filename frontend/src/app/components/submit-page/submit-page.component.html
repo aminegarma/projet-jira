@@ -1,0 +1,59 @@
+<section class="forum-shell">
+  <header class="forum-hero">
+    <div>
+      <p class="section-kicker">Forum interne</p>
+      <h2>Réclamations et tickets visibles par tous</h2>
+      <p class="section-note">Flux lié à SQLite via Flask. Les nouveaux tickets apparaissent ici dès leur création.</p>
+    </div>
+    <div class="hero-actions">
+      <button type="button" class="ghost" (click)="refreshForum()">Actualiser</button>
+      <a class="ghost button-link" [routerLink]="['/new-jira']">Ajouter un nouveau Jira</a>
+    </div>
+  </header>
+
+  <div class="forum-layout">
+    <main class="forum-main">
+      <section class="thread-list">
+        @if (loadingTickets) {
+          <p class="state-copy">Chargement du fil...</p>
+        } @else {
+          @for (ticket of tickets; track ticket.id) {
+            <article class="thread-card">
+              <div class="thread-head">
+                <div>
+                  <p class="thread-meta">#{{ ticket.id }} · {{ ticket.categorie }} · {{ ticket.departement_cible }}</p>
+                  <a class="thread-title" [routerLink]="['/items', ticket.id]">{{ ticket.titre }}</a>
+                </div>
+                <span class="priority-badge" [class]="'priority-' + ticket.priorite">
+                  {{ formatPriority(ticket.priorite) }}
+                </span>
+              </div>
+
+              <p class="thread-description">{{ ticket.description }}</p>
+
+              <div class="thread-footer">
+                <span>{{ ticket.reporter_name ?? 'Non défini' }}</span>
+                <span>{{ ticket.assignee_name ?? 'Non affecté' }}</span>
+                <span>{{ formatStatus(ticket.statut) }}</span>
+                <span>{{ ticket.date_creation | date: 'dd/MM/yyyy HH:mm' }}</span>
+              </div>
+            </article>
+          }
+        }
+      </section>
+    </main>
+
+    <aside class="forum-sidebar">
+      <section class="mistral-card">
+        <p class="section-kicker">Mistral AI</p>
+        <h3>Assistant chatbot</h3>
+        <p class="section-note">Espace réservé pour la réponse IA, à brancher plus tard sur l’API Mistral.</p>
+        <div class="chat-placeholder">
+          <div class="chat-bubble bot">Bot: ce panneau servira aux suggestions, résumés et priorisation.</div>
+          <div class="chat-bubble user">Toi: place réservée pour le futur chat.</div>
+        </div>
+        <textarea rows="3" placeholder="Chat Mistral à brancher plus tard..." disabled></textarea>
+      </section>
+    </aside>
+  </div>
+</section>
