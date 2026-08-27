@@ -1,0 +1,118 @@
+<section class="page-card">
+  @if (loading) {
+    <p class="state-copy">Chargement du ticket...</p>
+  } @else if (notFound || !ticket) {
+    <div class="empty-state">
+      <div>
+        <p class="section-kicker">Détail introuvable</p>
+        <h2>Aucun ticket ne correspond à cet identifiant.</h2>
+      </div>
+      <a routerLink="/submit">Retour au formulaire</a>
+    </div>
+  } @else {
+    <div class="page-header">
+      <div>
+        <p class="section-kicker">Détail</p>
+        <h2>{{ ticket.titre }}</h2>
+      </div>
+      <a routerLink="/submit">Retour au formulaire</a>
+    </div>
+
+    <div class="summary-grid">
+      <article>
+        <span>Catégorie</span>
+        <strong>{{ ticket.categorie }}</strong>
+      </article>
+      <article>
+        <span>Gravité</span>
+        <strong>{{ graviteLabel(ticket.gravite) }}</strong>
+      </article>
+      <article>
+        <span>Affectation</span>
+        <strong>{{ ticket.assignee_name ?? 'Non affecté' }}</strong>
+      </article>
+      <article>
+        <span>Priorité</span>
+        <strong class="priority" [class]="'priority-' + ticket.priorite">
+          {{ ticket.priorite === 'urgent' ? 'Urgente' : ticket.priorite === 'normal' ? 'Normale' : 'Faible' }}
+        </strong>
+      </article>
+    </div>
+
+    <div class="detail-grid">
+      <div class="panel">
+        <h3>Description</h3>
+        <p>{{ ticket.description }}</p>
+      </div>
+
+      <div class="panel">
+        <h3>Métadonnées</h3>
+        <ul>
+          <li><span>Demandeur</span><strong>{{ ticket.reporter_name ?? 'Non défini' }}</strong></li>
+          <li><span>Email</span><strong>{{ ticket.reporter_email ?? 'Non défini' }}</strong></li>
+          <li><span>Département cible</span><strong>{{ ticket.departement_cible }}</strong></li>
+          <li><span>Statut actuel</span><strong>{{ formatStatus(ticket.statut) }}</strong></li>
+          <li><span>Créé le</span><strong>{{ ticket.date_creation | date: 'dd/MM/yyyy HH:mm' }}</strong></li>
+          <li><span>Utilisateur assigné</span><strong>{{ userLabel(ticket.assignee_user_id) }}</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Changer le statut</h3>
+      <div class="status-row">
+        <select [(ngModel)]="selectedStatus">
+          <option value="ouvert">Ouvert</option>
+          <option value="en_cours">En cours</option>
+          <option value="resolu">Résolu</option>
+        </select>
+        <button type="button" (click)="saveStatus()">Enregistrer</button>
+      </div>
+      @if (updateMessage) {
+        <p class="feedback">{{ updateMessage }}</p>
+      }
+    </div>
+
+    <div class="detail-grid">
+      <div class="panel">
+        <h3>Changer l'affectation</h3>
+        <div class="status-row">
+          <select [(ngModel)]="selectedAssigneeId">
+            @for (user of users; track user.id) {
+              <option [ngValue]="user.id">{{ user.nom }} - {{ user.departement }}</option>
+            }
+          </select>
+          <button type="button" (click)="saveAssignment()">Affecter</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Ajouter un commentaire</h3>
+        <textarea rows="4" [(ngModel)]="commentMessage" placeholder="Ajouter un commentaire interne"></textarea>
+        <div class="status-row">
+          <button type="button" (click)="addComment()">Commenter</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <div class="panel">
+        <h3>Historique</h3>
+        <ul>
+          @for (entry of history; track entry.id) {
+            <li><span>{{ entry.action }}</span><strong>{{ entry.date_action | date: 'dd/MM/yyyy HH:mm' }}</strong></li>
+          }
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h3>Commentaires</h3>
+        <ul>
+          @for (comment of comments; track comment.id) {
+            <li><span>{{ userLabel(comment.user_id) }}</span><strong>{{ comment.message }}</strong></li>
+          }
+        </ul>
+      </div>
+    </div>
+  }
+</section>

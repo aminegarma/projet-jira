@@ -1,0 +1,18 @@
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">EVO</span>
+      <h1>{{ title() }}</h1>
+    </div>
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Tickets</a>
+      <a [routerLink]="['/new-jira']" routerLinkActive="active">Nouvelle demande</a>
+    </nav>
+  </header>
+
+  <div class="subbar">Prototype Angular. Le dashboard principal reste sur Flask: /dashboard</div>
+
+  <main class="content">
+    <router-outlet />
+  </main>
+</div>

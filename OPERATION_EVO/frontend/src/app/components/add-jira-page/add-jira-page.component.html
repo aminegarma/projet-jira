@@ -1,0 +1,69 @@
+<section class="page-card">
+  <div class="page-header">
+    <div>
+      <p class="section-kicker">Nouveau Jira</p>
+      <h2>Créer une réclamation ou un ticket</h2>
+      <p class="section-note">Le ticket sera enregistré dans SQLite via Flask puis visible sur le forum d’accueil.</p>
+    </div>
+    <a class="ghost button-link" [routerLink]="['/']">Retour au forum</a>
+  </div>
+
+  <form class="form-grid" [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      <span>Titre</span>
+      <input type="text" formControlName="titre" placeholder="Ex. Erreur de connexion" />
+    </label>
+
+    <label class="full-width">
+      <span>Description</span>
+      <textarea rows="6" formControlName="description" placeholder="Décrivez le besoin, le blocage ou le contexte."></textarea>
+    </label>
+
+    <label>
+      <span>Catégorie</span>
+      <select formControlName="categorie">
+        @for (category of categories; track category) {
+          <option [value]="category">{{ category }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      <span>Gravité</span>
+      <select formControlName="gravite">
+        <option value="faible">Faible</option>
+        <option value="moyenne">Moyenne</option>
+        <option value="haute">Haute</option>
+      </select>
+    </label>
+
+    <label>
+      <span>Priorité</span>
+      <select formControlName="priorite">
+        <option value="faible">Faible</option>
+        <option value="normal">Normale</option>
+        <option value="urgent">Urgente</option>
+      </select>
+    </label>
+
+    <label>
+      <span>Département cible</span>
+      <select formControlName="departement_cible">
+        <option>IT</option>
+        <option>Finance</option>
+        <option>RH</option>
+        <option>Achats</option>
+        <option>Produit</option>
+      </select>
+    </label>
+
+    <div class="actions full-width">
+      <button type="submit" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Envoi en cours...' : 'Publier le ticket' }}
+      </button>
+      @if (submittedMessage) {
+        <p class="feedback">{{ submittedMessage }}</p>
+      }
+    </div>
+  </form>
+</section>

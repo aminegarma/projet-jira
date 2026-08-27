@@ -1,0 +1,33 @@
+<section class="tickets-page">
+  <header class="tickets-header">
+    <div>
+      <h2>Tickets Operation EVO</h2>
+      <p>Vue prototype Angular des tickets. Le dashboard principal reste la page Flask /dashboard.</p>
+    </div>
+    <div class="actions">
+      <button type="button" class="refresh" (click)="refreshTickets()">Rafraichir</button>
+      <a class="new-ticket" [routerLink]="['/new-jira']">Nouvelle demande</a>
+    </div>
+  </header>
+
+  @if (loadingTickets) {
+    <p class="state-copy">Chargement des tickets...</p>
+  } @else {
+    <div class="tickets-list">
+      @for (ticket of sortedTickets(); track ticket.id) {
+        <article class="ticket-card">
+          <div class="ticket-main">
+            <a class="ticket-title" [routerLink]="['/items', ticket.id]">{{ ticket.titre }}</a>
+            <p class="ticket-meta">{{ ticket.categorie ?? 'general' }} · {{ ticket.departement_cible ?? 'N/A' }}</p>
+          </div>
+          <div class="ticket-stats">
+            <span>Priorite: {{ formatPriority(ticket.priorite) }}</span>
+            <span>Statut: {{ formatStatus(ticket.statut) }}</span>
+            <span>Affecte a: {{ ticket.assignee_name ?? 'Non assigne' }}</span>
+            <span>{{ ticket.date_creation | date: 'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>
